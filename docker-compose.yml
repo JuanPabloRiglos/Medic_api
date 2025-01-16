@@ -1,0 +1,38 @@
+#Version del yaml 
+version: '3.3'
+
+services:
+# Levanto un servicio de postges, la linea de abajo es el nombre, le puedo poner el que quiera
+  postgres-db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=medical_db
+      - POSTGRES_USER=medical_admin
+      - POSTGRES_PASSWORD=medical_password
+    ports:
+      - 5432:5432
+
+      # En una terminal de ubuntu correr : docker-compose up -d postgres-db
+      # el -d es el detach, p/ que corra en segundo plano, seguido del nombre q le puse al servicio
+
+    volumes:
+    # El volumen es para darle persistencia al contenedor
+    # sino cuando se baje el contendor, se borra todo
+      - ./postgres_data:/var/lib/postgresql/data
+
+      # 1 Crear carpeta en la razi del proyecto
+      # 2 con el mismo nombre dl vlmen, en este caso: postgres_data
+      # 3 agregar al gitignore 
+      # 4 correr exacto mismo comando anterior : docker-compose up -d postgres-db
+
+  pgadmin:
+    #Otro serivicio distinto, pgadmin p/ manejar la bd
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@mail.com 
+      - PGADMIN_DEFAULT_PASSWORD=root
+    ports:
+      - 5050:80  
+      # Correr docker-compose up -d pgadmin (o el nombre que se haya puesto)
+      # http://localhost:5050/browser/  p/usar el pgadmin
+      # la ip que tengo que usar p/ crear el server es el nombre del servicio aca, "postgres-db"
