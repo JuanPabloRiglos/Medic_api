@@ -1,11 +1,17 @@
+//Explicaciones debajo de todo
+
 //importaciones externas
 import express from 'express';
 import cors from 'cors';
 
 //importaciones propias
 import apiRoutes from "./routes/index.js"
-import {logErrors, errorsHanlder, boomErrorHanlder} from './middlewares/error.handler.js'
-import e from 'express';
+import {
+         logErrors, 
+         errorsHanlder, 
+         boomErrorHanlder, 
+         ormErrorHandler} from './middlewares/error.handler.js'
+
 
 //constantes & variables necesarias
 const port = 3000
@@ -41,8 +47,20 @@ const port = 3000
  //manejo de errores
  app.use(logErrors);
  app.use(boomErrorHanlder);
+ app.use(ormErrorHandler);
  app.use(errorsHanlder);
 
  app.listen(port, ()=>{
     console.log(`Servidor corriendo en el puerto ${port}`)
  })
+
+ /*
+  - Comenzar levantando los servicios de docker-compose, ver el archivo docker-compose
+
+  - Correr migraciones c/vez que se agregue una feature
+         primer correr el migrations:generate --nombreQueQuiera
+               -> genera un archivo dentro de db/migrations y ahi armar la migracion. 
+ visitar url :
+  https://platzi.com/home/clases/2507-backend-nodejs-postgres/41557-configurando-y-corriendo-migraciones-con-npm-scrip/
+ */
+

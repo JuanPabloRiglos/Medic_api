@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "migrations:generate":"sequelize-cli migration:generate --name",
+    "migrations:run":"sequelize-cli db:migrate",
+    "migrations:revert":"sequelize-cli db:migrate:undo"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +23,8 @@
     "joi": "^17.13.3",
     "pg": "^8.13.1",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.37.5"
+    "sequelize": "^6.37.5",
+    "sequelize-cli": "^6.6.2",
+    "uuid": "^11.0.5"
   }
 }

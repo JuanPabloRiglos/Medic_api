@@ -36,3 +36,28 @@ services:
       # Correr docker-compose up -d pgadmin (o el nombre que se haya puesto)
       # http://localhost:5050/browser/  p/usar el pgadmin
       # la ip que tengo que usar p/ crear el server es el nombre del servicio aca, "postgres-db"
+
+
+      #Para hacerlo con MYSQL
+  mysql:
+  #correr: como con docker pero con el nombre de este servicio
+    image: mysql:5
+    environment:
+      - MYSQL_DATABASE=my_store
+      - MYSQL_USER=root
+      - MYSQL_ROOT_PASSWORD= passworAGusto
+      - MYSQL_PORT= 3306
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql_data:/var/lib/mysql 
+      #hacer la carpeta mysql_data en el root
+      #como con pstgres, y sumarla al ignore
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin123 #no se si es la misma del servicio
+      - PMA_HOST=mysql #nombre del servicio de mysql que hayamos usado
+    ports:
+      - 8080:80
