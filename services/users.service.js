@@ -9,13 +9,13 @@ class UserService{
     
     async getAll(){
        const db_data = await models.User.findAll();
+       console.log('LLEGUEE ACAAA', db_data)
         // el models. va seguido del nombre de la clase del modelo, en este caso, User
        return db_data;
     };
 
     async findOne(id){
         const user = await models.User.findByPk(id);
-        console.log('USUARIOOO', id)
         if(! user) throw boom.notFound('Usuario no encontrado');
         return user;
     };

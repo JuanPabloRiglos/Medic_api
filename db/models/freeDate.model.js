@@ -24,7 +24,9 @@ const FreeDateSchema = {
         allowNull: false,
         references: {
             model: 'users',
-            key: 'id'
+            key: 'id', 
+            onUpdate: 'CASCADE', 
+            onDelete: 'SET NULL'
         }
     },
     ownedBy: {//prsna en nombre de quien esta hecha la reserva
@@ -32,7 +34,9 @@ const FreeDateSchema = {
         allowNull: true, // Puede ser null inicialmente.
         references: {
             model: 'users',
-            key: 'id'
+            key: 'id', 
+            onUpdate: 'CASCADE', 
+            onDelete: 'SET NULL'
         }
     },
     assignedBy: {// prsna que efectuo la reserva (ej: secretary)
@@ -40,7 +44,9 @@ const FreeDateSchema = {
         allowNull: true, // Puede ser null inicialmente.
         references: {
             model: 'users',
-            key: 'id'
+            key: 'id', 
+            onUpdate: 'CASCADE', 
+            onDelete: 'SET NULL'
         }
     },
     createdAt: {

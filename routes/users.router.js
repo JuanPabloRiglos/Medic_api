@@ -1,19 +1,16 @@
 import express from 'express';
 //importaciones internas
-import UserService from '../services/users.service.js';
+import  {userController}  from '../controllers/user.controller.js';
 import { validatorHandler } from '../middlewares/entryValidatorHandler.js';
 import {createUserRequiredDtos, updateUserRequiredDtos, findOrDeleteRequireDtos} from '../dtos/user.dto.js'
 
-import { v4 as uuidv4 } from 'uuid';
 
-//instancio la clase para usar fns
-const service = new UserService()
 
 const router = express.Router();
 
 router.get('/', async (req, res, next)=>{
     try {
-        const usersIndb = await service.getAll()
+        const usersIndb = await userController.getAll(next)
         res.status(201).json(usersIndb)
     } catch (error) {
         next(error)
@@ -26,7 +23,7 @@ router.get('/:id',
     async (req, res, next)=>{
     try {
         const {id} = req.params
-        const findedUser  = await service.findOne(id)
+        const findedUser  = await userController.getById(id, next)
         res.status(201).json(findedUser)
     } catch (error) {
         next(error)
@@ -40,7 +37,7 @@ router.patch('/:id',
     const {id} = req.params;
     const newData = req.body
     try {
-        const updatedUser  = await service.update(id, newData)
+        const updatedUser  = await userController.update(id, newData, next)
         res.status(200).json(updatedUser)
     } catch (error) {
         next(error)
@@ -52,8 +49,8 @@ router.post('/',
     validatorHandler(createUserRequiredDtos, 'body') ,
     async(req, res, next)=>{
     try {
-        const userToAdd = { id: uuidv4(), ...req.body };
-        const newUser  = await service.create(userToAdd)
+        const userToAdd = req.body ;
+        const newUser  = await userController.create(userToAdd, next)
         res.status(200).json(newUser)
     } catch (error) {
         next(error)
@@ -66,7 +63,7 @@ router.delete('/:id',
     async(req, res, next)=>{
     try {
         const {id} = req.params
-        const removedUSer  = await service.delete(id)
+        const removedUSer  = await userController.delete(id, next)
         res.status(201).json(removedUSer)
     } catch (error) {
         next(error)
