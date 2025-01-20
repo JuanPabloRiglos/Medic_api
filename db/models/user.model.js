@@ -50,19 +50,22 @@ const UserSchema = {
     }
 };
 
-class UserModel extends Model {
+class User extends Model {
     static associate(models){
-     
+        this.hasMany(models.FreeDate, { as: 'createdDates', foreignKey: 'createdBy' }); 
+        this.hasMany(models.FreeDate, { as: 'assignedDates', foreignKey: 'assignedBy' }); 
+        this.hasMany(models.FreeDate, { as: 'ownedDates', foreignKey: 'ownedBy' });
+    
     };
 
     static config(sequelize){
         return {
             sequelize,
             tableName: USER_TABLE,
-            modelName: 'UserModel',
+            modelName: 'User',
             timestamps:false
         }
     }
 }
 
-export {USER_TABLE, UserSchema, UserModel }
+export {USER_TABLE, UserSchema, User }

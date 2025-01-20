@@ -8,19 +8,20 @@ const models = sequelize.models
 class UserService{
     
     async getAll(){
-       const db_data = await models.UserModel.findAll();
+       const db_data = await models.User.findAll();
+        // el models. va seguido del nombre de la clase del modelo, en este caso, User
        return db_data;
     };
 
     async findOne(id){
-        const user = await models.UserModel.findByPk(id);
+        const user = await models.User.findByPk(id);
         console.log('USUARIOOO', id)
         if(! user) throw boom.notFound('Usuario no encontrado');
         return user;
     };
 
     async create(newData){
-        const newUser = await models.UserModel.create(newData);
+        const newUser = await models.User.create(newData);
         if (! newUser) throw boom.badImplementation('Error al crear usuario');
         return newUser;
     };
