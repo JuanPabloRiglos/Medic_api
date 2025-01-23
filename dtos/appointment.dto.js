@@ -7,7 +7,7 @@ const createdBy = Joi.string(); // UUID del creador.
 const ownedBy = Joi.string().allow(null); // UUID del propietario del turno, puede ser null inicialmente.
 const assignedBy = Joi.string().allow(null); // UUID de quien asignó el turno, puede ser null inicialmente.
 
-export const createFreeDateRequiredDtos = Joi.object({
+export const createAppointmentDtos = Joi.object({
     date: date.required(),
     time: time.required(),
     createdBy: createdBy.required(),
@@ -15,7 +15,7 @@ export const createFreeDateRequiredDtos = Joi.object({
     assignedBy: assignedBy.default(null)
 });
 
-export const updateFreeDateRequiredDtos = Joi.object({
+export const updateAppointmentRequiredDtos = Joi.object({
     date: date, 
     time: time, 
     ownedBy: ownedBy, 

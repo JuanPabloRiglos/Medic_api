@@ -1,14 +1,14 @@
 import { Sequelize } from 'sequelize';
 import { User, UserSchema, USER_TABLE } from './user.model.js';
-import {FreeDate, FreeDateSchema, FREEDATE_TABLE} from './freeDate.model.js'
+import {Appointment, AppointmentSchema, APPOINTMENT_TABLE} from './appointment.model.js'
 
 
 function setupModels(sequelize) {
     User.init(UserSchema, User.config(sequelize));
-    FreeDate.init(FreeDateSchema, FreeDate.config(sequelize));
+    Appointment.init(AppointmentSchema, Appointment.config(sequelize));
 
     User.associate(sequelize.models);
-    FreeDate.associate(sequelize.models)
+    Appointment.associate(sequelize.models)
 }
 
 export default setupModels ;

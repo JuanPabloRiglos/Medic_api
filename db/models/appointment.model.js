@@ -2,9 +2,9 @@ import { Model, DataTypes, Sequelize } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 
 // Nombre de la Tabla
-const FREEDATE_TABLE = 'free_dates';
+const APPOINTMENT_TABLE = 'appointment';
 
-const FreeDateSchema = {
+const AppointmentSchema = {
     id: {
         allowNull: false,
         primaryKey: true,
@@ -56,7 +56,7 @@ const FreeDateSchema = {
     }
 };
 
-class FreeDate extends Model {
+class Appointment extends Model {
     static associate(models) {
         this.belongsTo(models.User, { as: 'creator', foreignKey: 'createdBy' });
         this.belongsTo(models.User, { as: 'owner', foreignKey: 'ownedBy' });
@@ -66,11 +66,11 @@ class FreeDate extends Model {
     static config(sequelize) {
         return {
             sequelize,
-            tableName: FREEDATE_TABLE,
-            modelName: 'FreeDate',
+            tableName: APPOINTMENT_TABLE,
+            modelName: 'Appointment',
             timestamps: false
         };
     }
 }
 
-export { FREEDATE_TABLE, FreeDateSchema, FreeDate };
+export { APPOINTMENT_TABLE, AppointmentSchema, Appointment };

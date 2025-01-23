@@ -1,11 +1,11 @@
 //importaciones de 3ros
 import { v4 as uuidv4 } from 'uuid';
 //importaciones internas
-import freeDateService from '../services/freeDate.service.js'
+import appointmentService from '../services/appointment.service.js'
 //instancio la clase para usar fns
-const service = new freeDateService()
+const service = new appointmentService()
 
-export const freeDateController ={
+export const appointmentController ={
 
     async getAll(next){
         try {
@@ -36,6 +36,7 @@ export const freeDateController ={
     },
 
     async create(data, next){
+        console.log('EN Controller APP')
         try {
             const dateToAdd = { id: uuidv4(), ...data };
             const newDate  = await service.create(dateToAdd)

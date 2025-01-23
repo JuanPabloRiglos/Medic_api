@@ -5,23 +5,24 @@ import sequelize from '../libs/sequelize.js'
 const models = sequelize.models
 
 
-class FreeDateService{
+class appointmentService{
     
     async getAll(){
-       const db_data = await models.FreeDate.findAll();
+       const db_data = await models.Appointment.findAll();
        // el models. va seguido del nombre de la clase del modelo, en este caso, User
        return db_data;
     };
 
     async findOne(id){
-        const date = await models.FreeDate.findByPk(id);
+        const date = await models.Appointment.findByPk(id);
         console.log('Datee', id)
         if(! date) throw boom.notFound('Turno no encontrado');
         return date;
     };
 
     async create(newData){
-        const newDate = await models.FreeDate.create(newData);
+        console.log('EN SERVICE APP')
+        const newDate = await models.Appointment.create(newData);
         if (! newDate) throw boom.badImplementation('Error al crear el turno');
         return newDate;
     };
@@ -42,4 +43,4 @@ class FreeDateService{
     }
 };
 
-export default FreeDateService
+export default appointmentService

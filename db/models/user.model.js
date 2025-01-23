@@ -52,9 +52,9 @@ const UserSchema = {
 
 class User extends Model {
     static associate(models){
-        this.hasMany(models.FreeDate, { as: 'createdDates', foreignKey: 'createdBy' }); 
-        this.hasMany(models.FreeDate, { as: 'assignedDates', foreignKey: 'assignedBy' }); 
-        this.hasMany(models.FreeDate, { as: 'ownedDates', foreignKey: 'ownedBy' });
+        this.hasMany(models.Appointment, { as: 'createdDates', foreignKey: 'createdBy' }); 
+        this.hasMany(models.Appointment, { as: 'assignedDates', foreignKey: 'assignedBy' }); 
+        this.hasMany(models.Appointment, { as: 'ownedDates', foreignKey: 'ownedBy' });
     
     };
 
