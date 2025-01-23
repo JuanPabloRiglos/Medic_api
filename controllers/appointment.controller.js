@@ -17,6 +17,24 @@ export const appointmentController ={
         }   
     },
 
+    async getByDate(date) {
+        try {
+            const appointments = await service.findByDate(date);
+            return appointments;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    async getByDateRange(startDate, endDate) {
+        try {
+            const appointments = await service.findByDateRange(startDate, endDate);
+            return appointments;
+        } catch (error) {
+            throw error;
+        }
+    },
+
     async getById(id){
         try {
             const dateFound  = await service.findOne(id)

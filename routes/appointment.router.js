@@ -11,8 +11,16 @@ const router = express.Router();
 
 router.get('/', async (req, res, next)=>{
     try {
-        const allDates = await appointmentController.getAll()
-        res.status(201).json(allDates)
+        const { date, startDate, endDate } = req.query;
+        let appointments;
+        if (date) {
+            appointments = await appointmentController.getByDate(date);
+        } else if (!date && startDate && endDate) {
+            appointments = await appointmentController.getByDateRange(startDate, endDate);
+        } else {
+            appointments = await appointmentController.getAll();
+        }
+        res.status(201).json(appointments)
     } catch (error) {
         next(error)
     }   

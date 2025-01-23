@@ -1,5 +1,5 @@
 import boom from '@hapi/boom'
-
+import { Op } from 'sequelize'
 //importo servicio correlativo para unificar llamada
 import appointmentDataService from './appointmentData.service.js'
 
@@ -20,9 +20,81 @@ class appointmentService{
       }
     };
 
+    async findByDate(date) {
+      try {
+          const appointments = await models.Appointment.findAll({
+              where: {
+                  date
+              },
+              include: [
+                  {
+                      model: models.User,
+                      as: 'owner',
+                      attributes: ['id', 'name']
+                  },
+                  {
+                      model: models.AppointmentData,
+                      as: 'appointmentData'
+                  }
+              ]
+          });
+          return appointments;
+      } catch (error) {
+          throw boom.badImplementation('Error al obtener citas por fecha');
+      }
+  };
+
+  async findByDateRange(startDate, endDate) {
+      try {
+          const appointments = await models.Appointment.findAll({
+              where: {
+                  date: {
+                      [Op.between]: [startDate, endDate]
+                  }
+              },
+              include: [
+                  {
+                      model: models.User,
+                      as: 'owner',
+                      attributes: ['id', 'name']
+                  },
+                  {
+                      model: models.AppointmentData,
+                      as: 'appointmentData'
+                  }
+              ]
+          });
+          return appointments;
+      } catch (error) {
+          throw boom.badImplementation('Error al obtener citas por rango de fechas');
+      }
+  };
+
     async findOne(id){
       try {
-        const date = await models.Appointment.findByPk(id);
+        const date = await models.Appointment.findByPk(id, {
+          include: [
+              {
+                  model: models.User,
+                  as: 'creator',
+                  attributes: ['id', 'name']
+              },
+              {
+                  model: models.User,
+                  as: 'owner',
+                  attributes: ['id', 'name']
+              },
+              {
+                  model: models.User,
+                  as: 'assigner',
+                  attributes: ['id', 'name']
+              },
+              {
+                  model: models.AppointmentData,
+                  as: 'appointmentData'
+              }
+          ]
+      });
         console.log('Datee', id)
         if(! date) throw boom.notFound('Turno no encontrado');
         return date;
@@ -45,10 +117,9 @@ class appointmentService{
     async update(id, newData, appointmentDataId){
 
      try {
-    
-        const date = await this.findOne(id);
+        const date = await this.findByPk(id);
         if(! date) throw boom.notFound('Turno no encontrado');
-        let dateUpdated = await date.update(newData);
+        const dateUpdated = await date.update(newData);
         if(! dateUpdated) throw boom.badImplementation('Error al editar el turno');
         
         let newAppointmentData = null;
