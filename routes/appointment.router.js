@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get('/', async (req, res, next)=>{
     try {
-        const allDates = await appointmentController.getAll(next)
+        const allDates = await appointmentController.getAll()
         res.status(201).json(allDates)
     } catch (error) {
         next(error)
@@ -24,7 +24,7 @@ router.get('/:id',
     async (req, res, next)=>{
     try {
         const {id} = req.params
-        const findDate  = await appointmentController.getById(id, next)
+        const findDate  = await appointmentController.getById(id)
         res.status(201).json(findDate)
     } catch (error) {
         next(error)
@@ -38,7 +38,7 @@ router.patch('/:id',
     const {id} = req.params;
     const newData = req.body
     try {
-        const dateUpdated  = await appointmentController.update(id, newData, next)
+        const dateUpdated  = await appointmentController.update(id, newData)
         res.status(200).json(dateUpdated)
     } catch (error) {
         next(error)
@@ -52,7 +52,7 @@ router.post('/',
     try {
         console.log('EN ROUTER APP')
         const dateToAdd = req.body ;
-        const newDate  = await appointmentController.create(dateToAdd, next)
+        const newDate  = await appointmentController.create(dateToAdd)
         res.status(200).json(newDate)
     } catch (error) {
         next(error)
@@ -65,7 +65,7 @@ router.delete('/:id',
     async(req, res, next)=>{
     try {
         const {id} = req.params
-        const dateRemoved  = await appointmentController.destroy(id, next)
+        const dateRemoved  = await appointmentController.destroy(id)
         res.status(201).json(dateRemoved)
     } catch (error) {
         next(error)

@@ -7,50 +7,50 @@ const service = new UserService()
 
 export const userController ={
 
-    async getAll(next){
+    async getAll(){
         try {
             const usersIndb = await service.getAll()
             return(usersIndb)
         } catch (error) {
-            next(error);
+            throw error;
             
         }   
     },
 
-    async getById(id, next){
+    async getById(id){
         try {
             const findedUser  = await service.findOne(id)
             return(findedUser)
         } catch (error) {
-            next(error)
+            throw error;
         } 
     },
 
-    async update(id, newData, next){
+    async update(id, newData){
         try {
             const updatedUser  = await service.update(id, newData)
            return(updatedUser)
         } catch (error) {
-            next(error)
+            throw error;
         }   
     },
 
-    async create(data, next){
+    async create(data){
         try {
             const userToAdd = { id: uuidv4(), ...data };
             const newUser  = await service.create(userToAdd)
            return(newUser)
         } catch (error) {
-            next(error)
+            throw error;
         } 
     },
 
-    async destroy(id, next){
+    async destroy(id){
         try {
             const removedUSer  = await service.delete(id)
             return(removedUSer)
         } catch (error) {
-            next(error)
+            throw error;
         }   
     }
 }

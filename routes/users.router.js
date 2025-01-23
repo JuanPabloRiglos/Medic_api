@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.get('/', async (req, res, next)=>{
     try {
-        const usersIndb = await userController.getAll(next)
+        const usersIndb = await userController.getAll()
         res.status(201).json(usersIndb)
     } catch (error) {
         next(error)
@@ -23,7 +23,7 @@ router.get('/:id',
     async (req, res, next)=>{
     try {
         const {id} = req.params
-        const findedUser  = await userController.getById(id, next)
+        const findedUser  = await userController.getById(id)
         res.status(201).json(findedUser)
     } catch (error) {
         next(error)
@@ -37,7 +37,7 @@ router.patch('/:id',
     const {id} = req.params;
     const newData = req.body
     try {
-        const updatedUser  = await userController.update(id, newData, next)
+        const updatedUser  = await userController.update(id, newData)
         res.status(200).json(updatedUser)
     } catch (error) {
         next(error)
@@ -50,7 +50,7 @@ router.post('/',
     async(req, res, next)=>{
     try {
         const userToAdd = req.body ;
-        const newUser  = await userController.create(userToAdd, next)
+        const newUser  = await userController.create(userToAdd)
         res.status(200).json(newUser)
     } catch (error) {
         next(error)
@@ -63,7 +63,7 @@ router.delete('/:id',
     async(req, res, next)=>{
     try {
         const {id} = req.params
-        const removedUSer  = await userController.delete(id, next)
+        const removedUSer  = await userController.delete(id)
         res.status(201).json(removedUSer)
     } catch (error) {
         next(error)

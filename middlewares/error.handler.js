@@ -27,7 +27,7 @@ export function boomErrorHanlder (err, req, res, next){
 };
 
 export function errorsHanlder(err, req, res, next){
-    res.status(500)({
+    res.status(500).json({
         message: err.message,
         stack: err.stack,
     })

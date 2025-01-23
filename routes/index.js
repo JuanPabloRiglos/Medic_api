@@ -11,7 +11,7 @@ import authRouter from './auth.router.js';
     router.use('/user', userRouter);
     router.use('/appointment', appointmentRouter);
     router.use('/auth', authRouter);
-    router.use('/appoinmentData', appointmentDataRouter);
+    router.use('/appoinmentdata', appointmentDataRouter);
 }
 
 export default routerApi

@@ -55,6 +55,8 @@ class User extends Model {
         this.hasMany(models.Appointment, { as: 'createdDates', foreignKey: 'createdBy' }); 
         this.hasMany(models.Appointment, { as: 'assignedDates', foreignKey: 'assignedBy' }); 
         this.hasMany(models.Appointment, { as: 'ownedDates', foreignKey: 'ownedBy' });
+        this.hasMany(models.AppointmentData, { as: 'patientAppointments', foreignKey: 'patientId' });
+        this.hasMany(models.AppointmentData, { as: 'doctorAppointments', foreignKey: 'doctorId' });
     
     };
 

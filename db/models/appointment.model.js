@@ -61,6 +61,7 @@ class Appointment extends Model {
         this.belongsTo(models.User, { as: 'creator', foreignKey: 'createdBy' });
         this.belongsTo(models.User, { as: 'owner', foreignKey: 'ownedBy' });
         this.belongsTo(models.User, { as: 'assigner', foreignKey: 'assignedBy' });
+        this.hasOne(models.AppointmentData, { as: 'appointmentData', foreignKey: 'appointmentId' });
     }
 
     static config(sequelize) {
