@@ -28,7 +28,15 @@ export const appointmentController ={
 
     async update(id, newData){
         try {
-            const datedUpdate  = await service.update(id, newData)
+            let datedUpdate;
+            if(newData.ownedBy !== undefined){
+                //Si se asigna el turno
+                //automaticamente paso un id nuevo p/ AppointmentData y creo el registro con la info q tengo.
+                const appointmentDataId = uuidv4();
+                datedUpdate  = await service.update(id, newData, appointmentDataId)
+            }else{
+                datedUpdate  = await service.update(id, newData)
+            }
            return(datedUpdate)
         } catch (error) {
              throw error;

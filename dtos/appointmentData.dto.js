@@ -16,7 +16,7 @@ export const createAppointmentDataDtos = Joi.object({
     observations: observations.allow('').default(null),
     directives: directives.allow('').default(null),
     patientId: patientId.required(),
-    doctorId: doctorId.required()
+    doctorId: doctorId.default(null)
 });
 
 export const updateAppointmentDataDtos = Joi.object({

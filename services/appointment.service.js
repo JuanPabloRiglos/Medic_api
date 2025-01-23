@@ -1,5 +1,8 @@
 import boom from '@hapi/boom'
 
+//importo servicio correlativo para unificar llamada
+import appointmentDataService from './appointmentData.service.js'
+
 //importo instancia de sequelize
 import sequelize from '../libs/sequelize.js'
 const models = sequelize.models
@@ -39,13 +42,31 @@ class appointmentService{
       }
     };
 
-    async update(id, newData){
+    async update(id, newData, appointmentDataId){
+
      try {
+    
         const date = await this.findOne(id);
         if(! date) throw boom.notFound('Turno no encontrado');
-        const dateUpdated = await date.update(newData);
+        let dateUpdated = await date.update(newData);
         if(! dateUpdated) throw boom.badImplementation('Error al editar el turno');
-        return  dateUpdated;
+        
+        let newAppointmentData = null;
+
+        if(appointmentDataId){
+          //crea automaticamente el appointmentData
+          const externalService = new appointmentDataService();
+           newAppointmentData = await externalService.create({ id:appointmentDataId, appointmentId:id, date:dateUpdated.date, patientId:dateUpdated.ownedBy })
+        }
+
+        let response;
+        if(newAppointmentData){
+          response = {
+         "Turno actualizado": dateUpdated, 'Registro basico del turno a efectuarse creado': newAppointmentData}
+        }else{
+          response = {"Turno actualizado": dateUpdated}
+        }
+      return response;
      } catch (error) {
         throw boom.internal('Error al actualizar el turno', error)
      }
