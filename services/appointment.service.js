@@ -103,23 +103,29 @@ class appointmentService {
     }
   }
 
-  async create(newData) {
+  async createMany(newDataArray) {
+    console.log('A ver el newDataArray', newDataArray);
     try {
-      // Validación para verificar si ya existe un appointment en la misma fecha y hora
-      const existingAppointment = await models.Appointment.findOne({
-        where: {
-          date: newData.date,
-          time: newData.time,
-        },
-      });
+      const createdAppointments = [];
+      for (let newData of newDataArray) {
+        console.log('A ver el newData', newData);
+        // Validación para verificar si ya existe un appointment en la misma fecha y hora
+        const existingAppointment = await models.Appointment.findOne({
+          where: {
+            date: newData.date,
+            time: newData.time,
+          },
+        });
 
-      if (existingAppointment) {
-        throw boom.conflict('Ya existe un turno en esta fecha y horario');
-      }
+        if (existingAppointment) {
+          throw boom.conflict('Ya existe un turno en esta fecha y horario');
+        }
 
-      const newDate = await models.Appointment.create(newData);
-      if (!newDate) throw boom.badImplementation('Error al crear el turno');
-      return newDate;
+        const newDate = await models.Appointment.create(newData);
+        if (!newDate) throw boom.badImplementation('Error al crear el turno');
+        createdAppointments.push(newDate);
+      } //fin for of
+      return createdAppointments;
     } catch (error) {
       if (boom.isBoom(error)) {
         // Si el error ya es un error boom, lo re-lanzamos tal cual
