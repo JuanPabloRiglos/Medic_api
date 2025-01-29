@@ -18,15 +18,25 @@ class UserService {
   async findOne(param) {
     try {
       let user;
-      console.log('QUE MIERDFA LLEGA', param);
       if (param.includes('@') && param.includes('.')) {
         user = await models.User.findOne({
-          where: {
-            email: param,
+          include: {
+            model: models.Auth,
+            as: 'auth',
+            where: { email: param },
+            attributes: ['email'], // Solo traemos el email, excluimos password
           },
         });
       } else {
-        user = await models.User.findByPk(param); //por ID
+        user = await models.User.findByPk(param, {
+          include: [
+            {
+              model: models.Auth,
+              as: 'auth',
+              attributes: ['email'], // Incluir email también si buscamos por ID
+            },
+          ],
+        }); //por ID
       }
       if (!user) throw boom.notFound('Usuario no encontrado');
       return user;
@@ -46,8 +56,15 @@ class UserService {
         where: {
           lastName: lastName,
         },
+        include: [
+          {
+            model: models.Auth,
+            as: 'auth',
+            attributes: ['email'], // Solo traemos el email
+          },
+        ],
       });
-      console.log('USERRRR', user);
+
       if (!user) throw boom.notFound('Usuario no encontrado');
       return user;
     } catch (error) {
@@ -59,12 +76,29 @@ class UserService {
     }
   }
 
-  async create(newData) {
+  async create(userData) {
+    const { email, password, authId, ...userWithoutAuthData } = userData;
+    const authData = {
+      id: authId,
+      email: email,
+      password: password,
+      userId: userWithoutAuthData.id,
+    };
+
+    const transaction = await models.sequelize.transaction(); // Para asegurar atomicidad
     try {
-      const newUser = await models.User.create(newData);
-      if (!newUser) throw boom.badImplementation('Error al crear usuario');
-      return newUser;
+      // Crear usuario
+      const newUser = await models.User.create(userWithoutAuthData, {
+        transaction,
+      });
+
+      // Crear autenticación vinculada
+      const newAuth = await models.Auth.create(authData, { transaction });
+
+      await transaction.commit(); //ok solo si los 2 se crearon
+      return { user: newUser, emal: newAuth.email };
     } catch (error) {
+      await transaction.rollback(); //Tira todo para atras si uno no se creo
       throw boom.internal('Error al crear usuario', error);
     }
   }

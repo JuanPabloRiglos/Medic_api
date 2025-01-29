@@ -52,8 +52,9 @@ export const userController = {
   },
 
   async create(data) {
+    //HASHEAR EL PASSWORD
     try {
-      const userToAdd = { id: uuidv4(), ...data };
+      const userToAdd = { id: uuidv4(), authId: uuidv4(), ...data };
       const newUser = await service.create(userToAdd);
       return newUser;
     } catch (error) {

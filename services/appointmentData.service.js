@@ -36,7 +36,15 @@ class appointmentDataService {
           {
             model: models.User,
             as: 'patient',
-            attributes: ['name', 'email', 'phone'],
+            attributes: ['name', 'phone'],
+            include: [
+              //include anidado
+              {
+                model: models.Auth,
+                as: 'auth',
+                attributes: ['email'], // Traemos el email desde Auth
+              },
+            ],
           },
         ],
       });
