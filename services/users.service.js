@@ -77,6 +77,7 @@ class UserService {
   }
 
   async create(userData) {
+    console.log('LLEGAAAA ESTOOOO ', userData);
     const { email, password, authId, ...userWithoutAuthData } = userData;
     const authData = {
       id: authId,
@@ -85,7 +86,7 @@ class UserService {
       userId: userWithoutAuthData.id,
     };
 
-    const transaction = await models.sequelize.transaction(); // Para asegurar atomicidad
+    const transaction = await sequelize.transaction(); // Para asegurar atomicidad
     try {
       // Crear usuario
       const newUser = await models.User.create(userWithoutAuthData, {
@@ -96,7 +97,11 @@ class UserService {
       const newAuth = await models.Auth.create(authData, { transaction });
 
       await transaction.commit(); //ok solo si los 2 se crearon
-      return { user: newUser, emal: newAuth.email };
+      console.log('New User -> ', newUser, 'New Auth ->', newAuth);
+      return {
+        ...newUser.dataValues,
+        emal: newAuth.dataValues.email,
+      };
     } catch (error) {
       await transaction.rollback(); //Tira todo para atras si uno no se creo
       throw boom.internal('Error al crear usuario', error);

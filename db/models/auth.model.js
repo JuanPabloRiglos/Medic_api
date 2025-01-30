@@ -2,7 +2,7 @@ import { Model, DataTypes, Sequelize } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 
 //nombre de la Tabla
-const AUTH_TABLE = 'auths';
+const AUTH_TABLE = 'auth';
 
 const AuthSchema = {
   id: {
@@ -16,11 +16,11 @@ const AuthSchema = {
     type: DataTypes.UUID,
     unique: true,
     references: {
-      model: USER_TABLE,
+      model: 'users',
       key: 'id',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
     },
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
   },
   email: {
     allowNull: false,
@@ -47,11 +47,11 @@ class Auth extends Model {
   static config(sequelize) {
     return {
       sequelize,
-      tableName: 'auth',
+      tableName: AUTH_TABLE,
       modelName: 'Auth',
       timestamps: false,
     };
   }
 }
 
-export { AuthSchema, Auth, AUTH_TABLE };
+export { AUTH_TABLE, AuthSchema, Auth };

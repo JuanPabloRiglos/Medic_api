@@ -1,5 +1,6 @@
 //importaciones de 3ros
 import { v4 as uuidv4 } from 'uuid';
+import bcrypt from 'bcrypt';
 //importaciones internas
 import UserService from '../services/users.service.js';
 //instancio la clase para usar fns
@@ -52,9 +53,14 @@ export const userController = {
   },
 
   async create(data) {
-    //HASHEAR EL PASSWORD
+    //HASHEO EL PASSWORD
+    data.password = await bcrypt.hash(data.password, 8);
     try {
-      const userToAdd = { id: uuidv4(), authId: uuidv4(), ...data };
+      const userToAdd = {
+        id: uuidv4(),
+        authId: uuidv4(),
+        ...data,
+      };
       const newUser = await service.create(userToAdd);
       return newUser;
     } catch (error) {
