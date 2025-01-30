@@ -28,16 +28,50 @@ class AuthService {
       } else {
         user = await models.Auth.findByPk(param); //por ID
       }
-      if (!user) throw boom.notFound('Información del usuario no encontrado');
+      if (!user)
+        throw boom.notFound(
+          'No hay información del usuario que coincida con los parametros de busqueda'
+        );
       return user;
     } catch (error) {
-      throw boom.internal(
-        'Error al encontrar la información del usuario',
-        error
-      );
+      if (error.isBoom) {
+        throw error;
+      } else {
+        throw boom.internal(
+          'Error al encontrar la información del usuario',
+          error
+        );
+      }
     }
   }
 
+  //LOGIN -> Traigo la data del usuario
+
+  async getUserData(email) {
+    try {
+      const totalUserData = await models.Auth.findOne({
+        where: { email: email },
+        include: [{ model: models.User, as: 'user' }],
+      });
+      if (!totalUserData)
+        throw boom.notFound(
+          'No hay información del usuario que coincida con los parametros de busqueda'
+        );
+      let userLogged = {};
+      userLogged = { ...totalUserData.dataValues.user.dataValues };
+      userLogged.email = email;
+      return { userLogged };
+    } catch (error) {
+      if (error.isBoom) {
+        throw error;
+      } else {
+        throw boom.internal(
+          'Error al encontrar la información del usuario',
+          error
+        );
+      }
+    }
+  }
   //Create lo maneja el userService.
 
   async update(id, newData) {

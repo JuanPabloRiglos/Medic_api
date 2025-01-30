@@ -5,9 +5,13 @@ import AuthService from '../services/auth.service.js';
 const service = new AuthService();
 
 export const authController = {
-  async login(data) {
-    //hasheo
-    //Lo Maneja el Controller de usuarios.
+  async login(email) {
+    try {
+      const findedData = await service.getUserData(email);
+      return findedData;
+    } catch (error) {
+      throw error;
+    }
   },
 
   //REGISTER

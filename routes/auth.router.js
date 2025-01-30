@@ -1,4 +1,5 @@
 import express from 'express';
+import passport from 'passport';
 //importaciones internas
 import { authController } from '../controllers/auth.controller.js';
 import { userController } from '../controllers/user.controller.js'; //PARA POST/REGISTER
@@ -15,11 +16,13 @@ const router = express.Router();
 //login
 router.post(
   '/login',
-  validatorHandler(loginRequiredDtos, 'body'),
+
+  passport.authenticate('local', { session: false }),
   async (req, res, next) => {
     try {
-      const userToLog = req.body;
-      const loggedUser = await authController.login(userToLog);
+      console.log('PASO EL LOGIN');
+      const responsStrategy = req.user; // devuelto x la validacion. El registro en auth.
+      const loggedUser = await authController.login(responsStrategy.email);
       res.status(200).json(loggedUser);
     } catch (error) {
       next(error);

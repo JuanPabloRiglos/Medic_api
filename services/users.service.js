@@ -41,7 +41,11 @@ class UserService {
       if (!user) throw boom.notFound('Usuario no encontrado');
       return user;
     } catch (error) {
-      throw boom.internal('Error al encontrar usuario', error);
+      if (error.isBoom) {
+        throw error;
+      } else {
+        throw boom.internal('Error al encontrar usuario', error);
+      }
     }
   }
 
