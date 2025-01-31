@@ -75,13 +75,16 @@ class UserService {
       if (error.isBoom) {
         throw error;
       } else {
-        throw boom.internal('Error al encontrar usuario', error);
+        if (error.isBoom) {
+          throw error;
+        } else {
+          throw boom.internal('Error al encontrar usuario', error);
+        }
       }
     }
   }
 
   async create(userData) {
-    console.log('LLEGAAAA ESTOOOO ', userData);
     const { email, password, authId, ...userWithoutAuthData } = userData;
     const authData = {
       id: authId,
@@ -117,11 +120,18 @@ class UserService {
       const user = await this.findOne(id);
       if (!user) throw boom.notFound('Usuario no encontrado');
       const updatedUser = await user.update(newData);
-      if (!updatedUser)
-        throw boom.badImplementation('Error al editar el Usuario');
+      if (!updatedUser) throw boom.internal('Error al editar el Usuario');
       return updatedUser;
     } catch (error) {
-      throw boom.internal('Error al actualizar usuario', error);
+      if (error.isBoom) {
+        throw error;
+      } else {
+        if (error.isBoom) {
+          throw error;
+        } else {
+          throw boom.internal('Error al actualizar usuario', error);
+        }
+      }
     }
   }
 
@@ -132,7 +142,11 @@ class UserService {
       await user.destroy();
       return `Se elimino el usuario con ID ${id}`;
     } catch (error) {
-      throw boom.internal('Error al eliminar usuario', error);
+      if (error.isBoom) {
+        throw error;
+      } else {
+        throw boom.internal('Error al eliminar usuario', error);
+      }
     }
   }
 }

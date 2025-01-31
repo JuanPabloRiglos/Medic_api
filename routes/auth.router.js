@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import { authController } from '../controllers/auth.controller.js';
 import { userController } from '../controllers/user.controller.js'; //PARA POST/REGISTER
 import { validatorHandler } from '../middlewares/entryValidatorHandler.js';
+import { rolesHandler } from '../middlewares/auth.handler.js';
 import { createUserRequiredDtos } from '../dtos/user.dto.js'; //PARA POST/REGISTER
 import {
   updateUserRequiredDtos,
@@ -25,7 +26,7 @@ router.post(
       const responsStrategy = req.user; // devuelto x la validacion. El registro en auth.
       const { userLogged } = await authController.login(responsStrategy.email);
       const payload = {
-        sub: userLogged.id,
+        sub: userLogged.id, // de usuario, NO de auth.
         role: userLogged.role,
       };
       //Genero la firma p/token
@@ -44,6 +45,7 @@ router.post(
   async (req, res, next) => {
     try {
       const userToAdd = req.body;
+      userToAdd.role = 'Patient'; //Todo el que se registro x aca, sera paciente.
       const newUser = await userController.create(userToAdd); // USER CONTROLLER
       res.status(200).json(newUser);
     } catch (error) {
@@ -83,6 +85,8 @@ router.get(
 
 router.patch(
   '/:id',
+  passport.authenticate('jwt', { session: false }),
+  rolesHandler('Admin', 'Doctor', 'Secretary'),
   validatorHandler(findOrDeleteRequireDtos, 'params'),
   validatorHandler(updateUserRequiredDtos, 'body'),
   async (req, res, next) => {
@@ -99,6 +103,8 @@ router.patch(
 
 router.delete(
   '/:id',
+  passport.authenticate('jwt', { session: false }),
+  rolesHandler('Admin', 'Doctor', 'Secretary', 'Patient'),
   validatorHandler(findOrDeleteRequireDtos, 'params'),
   async (req, res, next) => {
     try {

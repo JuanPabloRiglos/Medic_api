@@ -59,6 +59,16 @@ export const appointmentController = {
     }
   },
 
+  async bookDate(id, owned) {
+    try {
+      const appointmentDataId = uuidv4();
+      const datedUpdate = await service.bookDate(id, owned, appointmentDataId);
+      return datedUpdate;
+    } catch (error) {
+      throw error;
+    }
+  },
+
   async createOneOrMany(data) {
     console.log('EN Controller APP');
     try {

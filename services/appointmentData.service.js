@@ -22,7 +22,11 @@ class appointmentDataService {
       if (!date) throw boom.notFound('Turno no encontrado');
       return date;
     } catch (error) {
-      throw boom.internal('Error al buscar el turno requerido');
+      if (error.isBoom) {
+        throw error;
+      } else {
+        throw boom.internal('Error al buscar el turno requerido');
+      }
     }
   }
 
@@ -77,7 +81,11 @@ class appointmentDataService {
       if (!dateUpdated) throw boom.internal('Error al editar el turno');
       return dateUpdated;
     } catch (error) {
-      throw boom.internal('Error al editar el los datos del turno');
+      if (error.isBoom) {
+        throw error;
+      } else {
+        throw boom.internal('Error al editar el los datos del turno');
+      }
     }
   }
 
@@ -88,7 +96,11 @@ class appointmentDataService {
       await date.destroy();
       return `Se elimino el turno con ID ${id}`;
     } catch (error) {
-      throw boom.internal('Error al eliminar el dato del turno');
+      if (error.isBoom) {
+        throw error;
+      } else {
+        throw boom.internal('Error al eliminar el dato del turno');
+      }
     }
   }
 }

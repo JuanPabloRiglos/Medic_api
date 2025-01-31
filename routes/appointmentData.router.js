@@ -1,7 +1,9 @@
 import express from 'express';
+import passport from 'passport';
 //importaciones internas
 import { appointmentDataController } from '../controllers/appointmentData.controller.js';
 import { validatorHandler } from '../middlewares/entryValidatorHandler.js';
+import { rolesHandler } from '../middlewares/auth.handler.js';
 import {
   createAppointmentDataDtos,
   updateAppointmentDataDtos,
@@ -43,6 +45,8 @@ router.get(
 
 router.patch(
   '/:id',
+  passport.authenticate('jwt', { session: false }),
+  rolesHandler('Admin', 'Doctor', 'Secretary'),
   validatorHandler(findOrDeleteRequireDtos, 'params'),
   validatorHandler(updateAppointmentDataDtos, 'body'),
   async (req, res, next) => {
@@ -59,13 +63,12 @@ router.patch(
 
 router.post(
   '/',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(createAppointmentDataDtos, 'body'),
   async (req, res, next) => {
     try {
-      console.log('EN ROUTER APP');
       const dateToAdd = req.body;
       const newDate = await appointmentDataController.create(dateToAdd);
-      console.log('ANTES DE RESPONDR', newDate);
       res.status(200).json(newDate);
     } catch (error) {
       next(error);
@@ -75,6 +78,8 @@ router.post(
 
 router.delete(
   '/:id',
+  passport.authenticate('jwt', { session: false }),
+  rolesHandler('Admin', 'Doctor', 'Secretary'),
   validatorHandler(findOrDeleteRequireDtos, 'params'),
   async (req, res, next) => {
     try {

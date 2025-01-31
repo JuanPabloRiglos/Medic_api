@@ -95,11 +95,19 @@ class appointmentService {
           },
         ],
       });
-      console.log('Datee', id);
+
       if (!date) throw boom.notFound('Turno no encontrado');
       return date;
     } catch (error) {
-      throw boom.internal('Error al encontrar turnos', error);
+      if (error.isBoom) {
+        throw error;
+      } else {
+        if (error.isBoom) {
+          throw error;
+        } else {
+          throw boom.internal('Error al encontrar turnos', error);
+        }
+      }
     }
   }
 
@@ -169,7 +177,49 @@ class appointmentService {
       }
       return response;
     } catch (error) {
-      throw boom.internal('Error al actualizar el turno', error);
+      if (error.isBoom) {
+        throw error;
+      } else {
+        throw boom.internal('Error al actualizar el turno', error);
+      }
+    }
+  }
+
+  async bookDate(id, owned, appointmentDataId) {
+    try {
+      const date = await this.findOne(id);
+      if (!date) throw boom.notFound('Turno no encontrado');
+      if (date.ownedBy)
+        throw boom.conflict(
+          'No se pudo reservar el turno, el mismo ya no estaba disponible'
+        );
+      const newData = { ...date, ownedBy: owned, assignedBy: owned };
+      const dateUpdated = await date.update(newData);
+      if (!dateUpdated)
+        throw boom.badImplementation('Error al editar el turno');
+
+      let newAppointmentData = null;
+      //crea automaticamente el appointmentData
+      const externalService = new appointmentDataService();
+      newAppointmentData = await externalService.create({
+        id: appointmentDataId,
+        appointmentId: id,
+        date: dateUpdated.date,
+        patientId: dateUpdated.ownedBy,
+      });
+
+      let response = {
+        'Turno actualizado': dateUpdated,
+        'Registro basico del turno a efectuarse creado': newAppointmentData,
+      };
+
+      return response;
+    } catch (error) {
+      if (error.isBoom) {
+        throw error;
+      } else {
+        throw boom.internal('Error al actualizar el turno', error);
+      }
     }
   }
 
@@ -180,7 +230,11 @@ class appointmentService {
       await date.destroy();
       return `Se elimino el turno con ID ${id}`;
     } catch (error) {
-      throw boom.internal('Error al eliminar el turno', error);
+      if (error.isBoom) {
+        throw error;
+      } else {
+        throw boom.internal('Error al eliminar el turno', error);
+      }
     }
   }
 }

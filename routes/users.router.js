@@ -3,6 +3,7 @@ import passport from 'passport';
 //importaciones internas
 import { userController } from '../controllers/user.controller.js';
 import { validatorHandler } from '../middlewares/entryValidatorHandler.js';
+import { rolesHandler } from '../middlewares/auth.handler.js';
 import {
   createUserRequiredDtos,
   updateUserRequiredDtos,
@@ -45,6 +46,7 @@ router.get(
 router.patch(
   '/:id',
   passport.authenticate('jwt', { session: false }),
+  rolesHandler('Admin', 'Doctor', 'Secretary', 'Patient'),
   validatorHandler(findOrDeleteRequireDtos, 'params'),
   validatorHandler(updateUserRequiredDtos, 'body'),
   async (req, res, next) => {
@@ -61,6 +63,8 @@ router.patch(
 
 router.post(
   '/',
+  passport.authenticate('jwt', { session: false }), //Pide que este logeado, pensado para usuarios NO patients
+  rolesHandler('Admin', 'Doctor', 'Secretary'),
   validatorHandler(createUserRequiredDtos, 'body'),
   async (req, res, next) => {
     try {
@@ -75,6 +79,8 @@ router.post(
 
 router.delete(
   '/:id',
+  passport.authenticate('jwt', { session: false }),
+  rolesHandler('Admin', 'Doctor', 'Secretary', 'Patient'),
   validatorHandler(findOrDeleteRequireDtos, 'params'),
   async (req, res, next) => {
     try {

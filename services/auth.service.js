@@ -83,10 +83,14 @@ class AuthService {
         throw boom.badImplementation('Error al editar la info. del Usuario');
       return updatedUser;
     } catch (error) {
-      throw boom.internal(
-        'Error al actualizar la información del usuario',
-        error
-      );
+      if (error.isBoom) {
+        throw error;
+      } else {
+        throw boom.internal(
+          'Error al actualizar la información del usuario',
+          error
+        );
+      }
     }
   }
 
@@ -97,10 +101,14 @@ class AuthService {
       await user.destroy();
       return `Se elimino la información con ID ${id}`;
     } catch (error) {
-      throw boom.internal(
-        'Error al eliminar la información del usuario',
-        error
-      );
+      if (error.isBoom) {
+        throw error;
+      } else {
+        throw boom.internal(
+          'Error al eliminar la información del usuario',
+          error
+        );
+      }
     }
   }
 }
