@@ -13,7 +13,12 @@ export function rolesHandler(...roles) {
     const reqId = req.params.id;
     console.log('USER EN ROLES', user, 'REQID', reqId, 'roles', roles);
 
+    if (!user) {
+      next(boom.unauthorized('No hay Usuario Logueado'));
+    }
+
     if (roles.includes(user.role) && user.role !== 'Patient') {
+      next();
     } else if (roles.includes('Patient') && user.role === 'Patient') {
       if (user.sub === reqId) {
         next();

@@ -3,10 +3,10 @@ import Joi from 'joi';
 const id = Joi.string();
 const name = Joi.string().min(3);
 const lastName = Joi.string().min(2);
-const email = Joi.string();
+const email = Joi.string(); //PAAATERN PARA EMAIL
 const password = Joi.string().alphanum().min(8);
 const role = Joi.string().valid('Patient', 'Secretary', 'Doctor', 'Admin');
-const phone = Joi.string().pattern(/^[0-9]{10,15}$/); // Validación básica para teléfono
+const phone = Joi.string().pattern(/^[0-9]{10,15}$/); // Validación básica para teléfono //PAAATERN PARA +
 const healthInsurance = Joi.string().min(3);
 
 export const createUserRequiredDtos = Joi.object({

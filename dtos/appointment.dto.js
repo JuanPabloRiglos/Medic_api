@@ -10,7 +10,7 @@ const assignedBy = Joi.string().allow(null); // UUID de quien asignó el turno, 
 const createAppointmentDto = Joi.object({
   date: date.required(),
   time: time.required(),
-  createdBy: createdBy.required(),
+  createdBy: createdBy,
   ownedBy: ownedBy.default(null),
   assignedBy: assignedBy.default(null),
 });

@@ -45,7 +45,6 @@ router.post(
   async (req, res, next) => {
     try {
       const userToAdd = req.body;
-      userToAdd.role = 'Patient'; //Todo el que se registro x aca, sera paciente.
       const newUser = await userController.create(userToAdd); // USER CONTROLLER
       res.status(200).json(newUser);
     } catch (error) {

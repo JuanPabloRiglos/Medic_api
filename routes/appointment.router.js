@@ -56,8 +56,13 @@ router.patch(
   async (req, res, next) => {
     const { id } = req.params;
     const newData = req.body;
+    const userLogged = req.user;
     try {
-      const dateUpdated = await appointmentController.update(id, newData);
+      const dateUpdated = await appointmentController.update(
+        id,
+        newData,
+        userLogged
+      );
       res.status(200).json(dateUpdated);
     } catch (error) {
       next(error);
@@ -94,8 +99,12 @@ router.post(
   validatorHandler(createAppointmentDtos, 'body'),
   async (req, res, next) => {
     try {
+      const userLogged = req.user;
       const datesToAdd = req.body; //siempre array
-      const newDate = await appointmentController.createOneOrMany(datesToAdd);
+      const newDate = await appointmentController.createOneOrMany(
+        datesToAdd,
+        userLogged
+      );
       res.status(200).json(newDate);
     } catch (error) {
       next(error);

@@ -42,13 +42,16 @@ export const appointmentController = {
     }
   },
 
-  async update(id, newData) {
+  async update(id, newData, userLogged) {
     try {
       let datedUpdate;
       if (newData.ownedBy !== undefined) {
         //Si se asigna el turno
         //automaticamente paso un id nuevo p/ AppointmentData y creo el registro con la info q tengo.
         const appointmentDataId = uuidv4();
+        !newData.assignedBy
+          ? (newData.assignedBy = userLogged.sub)
+          : newData.assignedBy;
         datedUpdate = await service.update(id, newData, appointmentDataId);
       } else {
         datedUpdate = await service.update(id, newData);
@@ -69,13 +72,14 @@ export const appointmentController = {
     }
   },
 
-  async createOneOrMany(data) {
+  async createOneOrMany(data, userLogged) {
     console.log('EN Controller APP');
     try {
       const appointmentsToAdd = data.map(
         (appointment) =>
           (appointment = {
             id: uuidv4(),
+            createdBy: userLogged.sub,
             ...appointment,
           })
       );
