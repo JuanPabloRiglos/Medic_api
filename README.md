@@ -118,11 +118,11 @@ pnpm run dev
 
 ---
 
-### 🔐 Auth (Autenticación)
+# 🔐 Auth (Autenticación)
 
 **📌 Concepto General**
 
-## La entidad Auth es el primer paso al usar la API. Es importante entender que la entidad Auth tiene su propia tabla en la base de datos, con 4 columnas: id, userId, email, password y createdAt.
+### La entidad Auth es el primer paso al usar la API. Es importante entender que la entidad Auth tiene su propia tabla en la base de datos, con 4 columnas: id, userId, email, password y createdAt.
 
 ### Estos atributos están diseñados para asegurar la protección de datos sensibles (como contraseñas) y facilitar la separación del componente de autenticación para un manejo más eficiente como microservicio.
 
@@ -280,7 +280,7 @@ CREATE TABLE auth (
 
 ---
 
-### 👤 User
+# 👤 User
 
 **📌 Concepto General**
 
@@ -424,7 +424,7 @@ _El paciente solo puede eliminat su usuario, no otros, para ello se requiere est
 
 ---
 
-### 📅 Appointments
+# 📅 Appointments
 
 ---
 
