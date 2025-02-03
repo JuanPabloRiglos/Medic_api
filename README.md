@@ -73,7 +73,7 @@ POST /login     # Inicio de sesión
 POST   /user                             # Crear usuario
 GET    /user                             # Obtener usuarios
 GET    /user?email=user@gmail.com        # Obtener usuarios por email
-PUT    /user/:id                         # Actualizar usuario
+PATCH    /user/:id                         # Actualizar usuario
 DELETE /user/:id                         # Eliminar usuario
 ```
 
@@ -84,7 +84,7 @@ POST   /appointment                                              # Crear turno
 GET    /appointment                                              # Obtener turnos
 GET    /appointment?date=2025-01-30                              # Obtener turno por fecha
 GET    /appointment?startDate=2025-01-24&endDate=2025-01-26      # Obtener turno por rango de fechas
-PUT    /appointment/:id                                          # Actualizar turno
+PATCH    /appointment/:id                                          # Actualizar turno
 DELETE /appointment/:id                                          # Eliminar turno
 ```
 
@@ -124,7 +124,7 @@ pnpm run dev
 
 ## La entidad Auth es el primer paso al usar la API. Es importante entender que la entidad Auth tiene su propia tabla en la base de datos, con 4 columnas: id, userId, email, password y createdAt.
 
-# Estos atributos están diseñados para asegurar la protección de datos sensibles (como contraseñas) y facilitar la separación del componente de autenticación para un manejo más eficiente como microservicio.
+### Estos atributos están diseñados para asegurar la protección de datos sensibles (como contraseñas) y facilitar la separación del componente de autenticación para un manejo más eficiente como microservicio.
 
 <!-- 📌 **Modelo de la tabla `auth` en la base de datos:**
 
