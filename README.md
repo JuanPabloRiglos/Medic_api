@@ -308,15 +308,15 @@ CREATE TABLE auth (
 
 ### 🔍 **Obtener Usuarios por...**
 
-## ID:
+### ID:
 
 📌 **Ruta:** `GET baseApi/api/v1/user/:id`
 
-## Email:
+### Email:
 
 📌 **Ruta:** `GET baseApi/api/v1/user?email=nombreApellido@gmail.com`
 
-## Apellido de usuario:
+### Apellido de usuario:
 
 📌 **Ruta:** `GET baseApi/api/v1/user?lastName=Apellido`
 
@@ -337,7 +337,7 @@ CREATE TABLE auth (
 }
 ```
 
-### ✍️ **Creacion de Usuario**
+### ✍️ **Creación de Usuario**
 
 **El endpoint presupone la existencia de un usuario loggeado que no tenga el rol "Patient"**
 _El paciente solo puede crear su usuario registrandose_
@@ -383,7 +383,7 @@ _El paciente solo puede crear su usuario registrandose_
 - **phone** : admite solo numeros
 - **healthInsurance** : admite un string de minimo 3 caracteres
 
-### ✍️ **Edicion de Usuario**
+### ✍️ **Edición de Usuario**
 
 **El endpoint presupone la existencia de un usuario loggeado**
 _El paciente solo puede editar su usuario, no otros, para ello se requiere estar loggeado_
