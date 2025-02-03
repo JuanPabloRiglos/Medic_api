@@ -118,7 +118,7 @@ pnpm run dev
 
 ---
 
-## 🔐 Auth (Autenticación)
+### 🔐 Auth (Autenticación)
 
 **📌 Concepto General**
 
@@ -280,7 +280,7 @@ CREATE TABLE auth (
 
 ---
 
-## 👤 User
+### 👤 User
 
 **📌 Concepto General**
 
@@ -421,6 +421,10 @@ _El paciente solo puede editar su usuario, no otros, para ello se requiere estar
 **El endpoint presupone la existencia de un usuario loggeado**
 _El paciente solo puede eliminat su usuario, no otros, para ello se requiere estar loggeado_
 📌 **Ruta:** `DELETE baseApi/api/v1/user/:id`
+
+---
+
+### 📅 Appointments
 
 ---
 
