@@ -214,7 +214,7 @@ CREATE TABLE auth (
 
 **Otros endpoints de la entidad 🔐 Auth**
 
-# Obtener Todos los Registros de Auth:
+### Obtener Todos los Registros de Auth:
 
 📌 **Ruta:** `GET baseApi/api/v1/auth`
 
@@ -232,19 +232,19 @@ CREATE TABLE auth (
 ]
 ```
 
-# Obtener Auth por ID:
+### Obtener Auth por ID:
 
 📌 **Ruta:** `GET baseApi/api/v1/auth/:id`
 
-# Buscar Auth por Email::
+### _Buscar Auth por Email:_
 
 📌 **Ruta:** `GET baseApi/api/v1/auth?email=nombreApellido@gmail.com`
 
-# Update y Delete
+## Update y Delete
 
 **Para realizar operaciones de update y delete, es necesario que el usuario esté logueado. Estos endpoints solo aceptan el ingreso de "Admin", "Doctor" y "Secretary". Deben incluir un token válido en el Bearer Token de la autorización del cliente (navegador o app como Postman).**
 
-## Editar Auth
+### Editar Auth
 
 📌 **Ruta:** `POST baseApi/api/v1/auth/:idbuscadoparaupdate`
 
@@ -274,7 +274,7 @@ CREATE TABLE auth (
 }
 ```
 
-# Eliminar Auth:
+### 🗑️ **Borrado de Auth:**
 
 📌 **Ruta:** `GET baseApi/api/v1/auth/:id`
 
@@ -308,15 +308,15 @@ CREATE TABLE auth (
 
 ### 🔍 **Obtener Usuarios por...**
 
-### ID:
+### _ID:_
 
 📌 **Ruta:** `GET baseApi/api/v1/user/:id`
 
-### Email:
+### _Email:_
 
 📌 **Ruta:** `GET baseApi/api/v1/user?email=nombreApellido@gmail.com`
 
-### Apellido de usuario:
+### _Apellido de usuario:_
 
 📌 **Ruta:** `GET baseApi/api/v1/user?lastName=Apellido`
 
