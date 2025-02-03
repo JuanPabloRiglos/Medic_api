@@ -1,7 +1,7 @@
 import Joi from 'joi';
 
 const id = Joi.string();
-const email = Joi.string();
+const email = Joi.string().email({ tlds: { allow: false } });
 const password = Joi.string().alphanum().min(8);
 
 export const createAuthRequiredDtos = Joi.object({
