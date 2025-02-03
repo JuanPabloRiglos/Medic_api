@@ -240,9 +240,9 @@ CREATE TABLE auth (
 
 📌 **Ruta:** `GET baseApi/api/v1/auth?email=nombreApellido@gmail.com`
 
-**Update y Delete**
+# Update y Delete
 
-## Para realizar operaciones de update y delete, es necesario que el usuario esté logueado. Estos endpoints solo aceptan el ingreso de "Admin", "Doctor" y "Secretary". Deben incluir un token válido en el Bearer Token de la autorización del cliente (navegador o app como Postman).
+**Para realizar operaciones de update y delete, es necesario que el usuario esté logueado. Estos endpoints solo aceptan el ingreso de "Admin", "Doctor" y "Secretary". Deben incluir un token válido en el Bearer Token de la autorización del cliente (navegador o app como Postman).**
 
 ## Editar Auth
 
