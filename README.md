@@ -284,7 +284,7 @@ CREATE TABLE auth (
 
 **📌 Concepto General**
 
-## La entidad User permite gestionar los usuarios de la aplicación. A través de los endpoints de esta entidad, se puede obtener información de todos los usuarios o de un usuario en particular, ya sea por ID, apellido (lastName) o email.
+### La entidad User permite gestionar los usuarios de la aplicación. A través de los endpoints de esta entidad, se puede obtener información de todos los usuarios o de un usuario en particular, ya sea por ID, apellido (lastName) o email.
 
 ### 🔍 **Obtener Todos los Usuarios**
 
@@ -428,7 +428,7 @@ _El paciente solo puede eliminat su usuario, no otros, para ello se requiere est
 
 **📌 Concepto General**
 
-## La entidad Appointment hace referencia a los turnos disponibles en la base de datos. Según la lógica de negocio, no hay appointments hasta que sean habilitados (creados) por un usuario logueado con permisos para hacerlo (todos menos pacientes).
+### La entidad Appointment hace referencia a los turnos disponibles en la base de datos. Según la lógica de negocio, no hay appointments hasta que sean habilitados (creados) por un usuario logueado con permisos para hacerlo (todos menos pacientes).
 
 _El appointment tiene 7 campos, entre ellos los mas importantes son 2, a saber :_
 
@@ -586,7 +586,7 @@ _"La búsqueda por ID nos da una de las respuestas más detalladas de toda la AP
 
 ### ✍️ **Creación de Appointment/Appointments**
 
-## Una de las necesidades más importantes que se presentaba al intentar entender la lógica del negocio era la posibilidad de crear turnos, la cual no se satisfacía con la mera posibilidad de crear un turno. Por ello, se trabajó para que el endpoint de creación acepte un array, el cual puede tener dentro un turno, o cuantos turnos se pretendan hacer.
+### Una de las necesidades más importantes que se presentaba al intentar entender la lógica del negocio era la posibilidad de crear turnos, la cual no se satisfacía con la mera posibilidad de crear un turno. Por ello, se trabajó para que el endpoint de creación acepte un array, el cual puede tener dentro un turno, o cuantos turnos se pretendan hacer.
 
 _Este endpoint no permitirá la creación de un turno dado para un día y un horario si previamente ya hay uno con esos valores en la base de datos (DB)._
 
@@ -709,7 +709,7 @@ _Si se va a usar el createdBy, asegurarse de que el mismo exista en la db_
 
 ### ✍️ **Edición y Borrado de Appointment/Appointments**
 
-## Nos regimos por las normas generales: no se le permite al paciente hacerlo y se debe especificar en el endpoint el ID del turno referido y el método (PATCH para editar y DELETE para borrar).
+### Nos regimos por las normas generales: no se le permite al paciente hacerlo y se debe especificar en el endpoint el ID del turno referido y el método (PATCH para editar y DELETE para borrar).
 
 📌 **Ruta:** `PATCH/DELETE baseApi/api/v1/appointment/:id`
 
