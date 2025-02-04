@@ -11,7 +11,14 @@ export function rolesHandler(...roles) {
     //Al user en el req, lo pone passport
     //aplicar eso, siempre que se haya usado passport primero
     const reqId = req.params.id;
-    console.log('USER EN ROLES', user, 'REQID', reqId, 'roles', roles);
+    console.log(
+      'USER EN ROLES',
+      user,
+      'path required ID',
+      reqId,
+      'roles',
+      roles
+    );
 
     if (!user) {
       next(boom.unauthorized('No hay Usuario Logueado'));

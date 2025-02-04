@@ -112,7 +112,6 @@ class appointmentService {
   }
 
   async createMany(newDataArray) {
-    console.log('A ver el newDataArray', newDataArray);
     try {
       const createdAppointments = [];
       for (let newData of newDataArray) {

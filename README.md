@@ -426,6 +426,319 @@ _El paciente solo puede eliminat su usuario, no otros, para ello se requiere est
 
 # 📅 Appointments
 
+**📌 Concepto General**
+
+## La entidad Appointment hace referencia a los turnos disponibles en la base de datos. Según la lógica de negocio, no hay appointments hasta que sean habilitados (creados) por un usuario logueado con permisos para hacerlo (todos menos pacientes).
+
+_El appointment tiene 7 campos, entre ellos los mas importantes son 2, a saber :_
+
+### _El campo ownedBy: Por defecto será null. Cuando se reserva un turno, aquí se introducirá el ID del paciente a nombre de quien está reservado el mismo._
+
+### _El campo assignedBy: ID de quien hizo la reserva, solo para tener control._
+
+### 🔍 **Obtener Todos los Appointments**
+
+📌 **Ruta:** `GET baseApi/api/v1/appointment`
+
+📤 **Response:**
+
+```json
+[
+  {
+    "id": "ae11f962-ad5d-4339-9d0a-33a2684b1e2a",
+    "date": "2025-01-30",
+    "time": "11:00:00",
+    "createdBy": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+    "ownedBy": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+    "assignedBy": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+    "createdAt": "2025-01-31T15:49:08.780Z"
+  },
+  {
+    "id": "40057297-3e0d-4d5b-936a-6294293a3779",
+    "date": "2025-02-28",
+    "time": "11:00:00",
+    "createdBy": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+    "ownedBy": null,
+    "assignedBy": null,
+    "createdAt": "2025-02-01T14:42:10.290Z"
+  }
+]
+```
+
+### 🔍 **Obtener Appointments por fechas 📅**
+
+### _fecha especifica:_
+
+📌 **Ruta:** `GET baseApi/api/v1/appointment?date=2025-01-30`
+
+📤 **Response:**
+
+```json
+[
+  {
+    "id": "ae11f962-ad5d-4339-9d0a-33a2684b1e2a",
+    "date": "2025-01-30",
+    "time": "11:00:00",
+    "createdBy": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+    "ownedBy": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+    "assignedBy": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+    "createdAt": "2025-01-31T15:49:08.780Z",
+    "owner": {
+      "id": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+      "name": "Juan Pablo"
+    },
+    "appointmentData": {
+      "id": "6011750a-3808-4d9d-ba7f-ebb3a31b5dc2",
+      "appointmentId": "ae11f962-ad5d-4339-9d0a-33a2684b1e2a",
+      "date": "2025-01-30",
+      "symptoms": null,
+      "observations": null,
+      "directives": null,
+      "patientId": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+      "doctorId": null,
+      "createdAt": "2025-01-31T16:31:37.946Z"
+    }
+  }
+]
+```
+
+_Véase que el response de arriba implica SOLO un appointment, con la info de la otra entidad AppointmenData_
+
+### _Por Rango de fechas:_
+
+📌 **Ruta:** `GET baseApi/api/v1/appointment?startDate=2025-01-24&endDate=2025-02-1`
+
+📤 **Response:**
+
+```json
+[
+  {
+    "id": "ae11f962-ad5d-4339-9d0a-33a2684b1e2a",
+    "date": "2025-01-30",
+    "time": "11:00:00",
+    "createdBy": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+    "ownedBy": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+    "assignedBy": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+    "createdAt": "2025-01-31T15:49:08.780Z",
+    "owner": {
+      "id": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+      "name": "Juan Pablo"
+    },
+    "appointmentData": {
+      "id": "6011750a-3808-4d9d-ba7f-ebb3a31b5dc2",
+      "appointmentId": "ae11f962-ad5d-4339-9d0a-33a2684b1e2a",
+      "date": "2025-01-30",
+      "symptoms": null,
+      "observations": null,
+      "directives": null,
+      "patientId": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+      "doctorId": null,
+      "createdAt": "2025-01-31T16:31:37.946Z"
+    }
+  }
+]
+```
+
+_Véase que el response de arriba implica SOLO un appointment, con la info de la otra entidad AppointmenData_
+
+### 🔍 **Obtener Appointments por ID**
+
+_"La búsqueda por ID nos da una de las respuestas más detalladas de toda la API, abarcando los nombres de la persona a quien se le asignó el turno, así como quien efectivamente hizo esa asignación, además de los datos que involucran la entidad appointmentData_
+
+📌 **Ruta:** `GET baseApi/api/v1/appointment//ae11f962-ad5d-4339-9d0a-33a2684b1e2a`
+
+📤 **Response:**
+
+```json
+{
+  "id": "ae11f962-ad5d-4339-9d0a-33a2684b1e2a",
+  "date": "2025-01-30",
+  "time": "11:00:00",
+  "createdBy": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+  "ownedBy": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+  "assignedBy": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+  "createdAt": "2025-01-31T15:49:08.780Z",
+  "creator": {
+    "id": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+    "name": "Juan Pablo"
+  },
+  "owner": {
+    "id": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+    "name": "Juan Pablo"
+  },
+  "assigner": {
+    "id": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+    "name": "Juan Pablo"
+  },
+  "appointmentData": {
+    "id": "6011750a-3808-4d9d-ba7f-ebb3a31b5dc2",
+    "appointmentId": "ae11f962-ad5d-4339-9d0a-33a2684b1e2a",
+    "date": "2025-01-30",
+    "symptoms": null,
+    "observations": null,
+    "directives": null,
+    "patientId": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+    "doctorId": null,
+    "createdAt": "2025-01-31T16:31:37.946Z"
+  }
+}
+```
+
+### ✍️ **Creación de Appointment/Appointments**
+
+## Una de las necesidades más importantes que se presentaba al intentar entender la lógica del negocio era la posibilidad de crear turnos, la cual no se satisfacía con la mera posibilidad de crear un turno. Por ello, se trabajó para que el endpoint de creación acepte un array, el cual puede tener dentro un turno, o cuantos turnos se pretendan hacer.
+
+_Este endpoint no permitirá la creación de un turno dado para un día y un horario si previamente ya hay uno con esos valores en la base de datos (DB)._
+
+📌 **Ruta:** `POST baseApi/api/v1/appointment`
+
+_Se necesita estar loggeado y con un rol distinto a 'Patient'_
+
+📥 **Request:**
+
+```json
+[
+  {
+    "date": "2025-02-28",
+    "time": "10:30"
+  }
+]
+```
+
+📤 **Response: ✅**
+
+```json
+[
+  {
+    "createdAt": "2025-02-04T13:23:18.874Z",
+    "id": "82a551ce-97eb-45a8-9ee3-4a2d145cf5e1",
+    "createdBy": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+    "date": "2025-02-28",
+    "time": "10:30:00",
+    "ownedBy": null,
+    "assignedBy": null
+  }
+]
+```
+
+📤 **Response: Turno previamente creado ❌**
+
+```json
+{
+  "statusCode": 409,
+  "error": "Conflict",
+  "message": "Ya existe un turno en esta fecha y horario"
+}
+```
+
+### Para la creación de multiples turnos, solo hay que sumar mas fechas. El "CreatedBy" se completa por defecto en caso de no especificar.
+
+📥 **Request:**
+
+```json
+[
+  [
+    {
+      "date": "2025-02-03",
+      "time": "11:00",
+      "createdBy": "e29cd687-c016-4313-8d3a-76575dccb7c1"
+    },
+    {
+      "date": "2025-02-03",
+      "time": "11:30",
+      "createdBy": "e29cd687-c016-4313-8d3a-76575dccb7c1"
+    },
+    {
+      "date": "2025-02-03",
+      "time": "12:00",
+      "createdBy": "e29cd687-c016-4313-8d3a-76575dccb7c1"
+    },
+    {
+      "date": "2025-02-03",
+      "time": "12:30",
+      "createdBy": "e29cd687-c016-4313-8d3a-76575dccb7c1"
+    }
+  ]
+]
+```
+
+📤 **Response: ✅**
+
+```json
+[
+  {
+    "createdAt": "2025-02-04T14:02:46.742Z",
+    "id": "b6767279-424d-46b4-a1f2-72a06c0168e4",
+    "createdBy": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+    "date": "2025-02-04",
+    "time": "11:00:00",
+    "ownedBy": null,
+    "assignedBy": null
+  },
+  {
+    "createdAt": "2025-02-04T14:02:46.761Z",
+    "id": "110fd4a0-8e38-4519-88f7-faa15ea419c0",
+    "createdBy": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+    "date": "2025-02-04",
+    "time": "11:30:00",
+    "ownedBy": null,
+    "assignedBy": null
+  },
+  {
+    "createdAt": "2025-02-04T14:02:46.768Z",
+    "id": "679d5817-7979-43e2-8378-ccca64879902",
+    "createdBy": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+    "date": "2025-02-04",
+    "time": "12:00:00",
+    "ownedBy": null,
+    "assignedBy": null
+  },
+  {
+    "createdAt": "2025-02-04T14:02:46.775Z",
+    "id": "96465ce6-0987-4dd1-9f50-3d90f2d83b1d",
+    "createdBy": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+    "date": "2025-02-04",
+    "time": "12:30:00",
+    "ownedBy": null,
+    "assignedBy": null
+  }
+]
+```
+
+_Si se va a usar el createdBy, asegurarse de que el mismo exista en la db_
+
+### ✍️ **Edición y Borrado de Appointment/Appointments**
+
+## Nos regimos por las normas generales: no se le permite al paciente hacerlo y se debe especificar en el endpoint el ID del turno referido y el método (PATCH para editar y DELETE para borrar).
+
+📌 **Ruta:** `PATCH/DELETE baseApi/api/v1/appointment/:id`
+
+## Ejemplo de edición
+
+```json
+{
+  "time": "15:30",
+  "ownedBy": "f49c5fdc-b8cf-4fd8-bf60-1fc0454a74ee",
+  "assignedBy": "6b9cf1c6-3c62-48ca-a20d-4fa10ca159b6"
+}
+```
+
+## IMPORTANTE
+
+_En la edición, si se modifica el ownedBy, esto creará automáticamente el campo correspondiente de appointmentData (historial de turno). Además, si no se pasa el campo assignedBy en el body, este será inyectado automáticamente por el backend para que el registro tenga toda la información necesaria._
+
+## Además
+
+## Reserva de Turnos por Pacientes
+
+_El paciente también puede reservar un turno, lo que creará el correspondiente appointmentData. Para hacerlo, el paciente debe estar logueado y hacer la llamada al endpoint_
+
+📌 **Ruta:** `PATCH baseApi/api/v1/appointment/book/:id`
+
+_Nota: El ID del endpoint es el del turno que se quiere reservar, no el del paciente.No deberá pasar ningun otro dato_
+
+# 📅🗂️ AppointmentsData
+
 ---
 
 🎯 **¡Gracias por usar Medic_api!** 🎯
