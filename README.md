@@ -779,7 +779,7 @@ _Internamente, permitirá el acceso a cualquier rol, pero en el caso de un pacie
 
 ### 🔍 **Obtener AppointmentData por Id**
 
-📌 **Ruta:** `GET baseApi/api/v1/appoinmentdata//6011750a-3808-4d9d-ba7f-ebb3a31b5dc2`
+📌 **Ruta:** `GET baseApi/api/v1/appoinmentdata/6011750a-3808-4d9d-ba7f-ebb3a31b5dc2`
 
 📤 **Response:**
 
