@@ -47,12 +47,13 @@ importers:
       sequelize:
         specifier: ^6.37.5
         version: 6.37.5(pg-hstore@2.3.4)(pg@8.13.1)
-      sequelize-cli:
-        specifier: ^6.6.2
-        version: 6.6.2
       uuid:
         specifier: ^11.0.5
         version: 11.0.5
+    devDependencies:
+      sequelize-cli:
+        specifier: ^6.6.2
+        version: 6.6.2
 
 packages:
 
