@@ -727,7 +727,7 @@ _Si se va a usar el createdBy, asegurarse de que el mismo exista en la db_
 
 _En la edición, si se modifica el ownedBy, esto creará automáticamente el campo correspondiente de appointmentData (historial de turno). Además, si no se pasa el campo assignedBy en el body, este será inyectado automáticamente por el backend para que el registro tenga toda la información necesaria._
 
-## Además
+### Además
 
 ## Reserva de Turnos por Pacientes
 
@@ -735,9 +735,151 @@ _El paciente también puede reservar un turno, lo que creará el correspondiente
 
 📌 **Ruta:** `PATCH baseApi/api/v1/appointment/book/:id`
 
-_Nota: El ID del endpoint es el del turno que se quiere reservar, no el del paciente.No deberá pasar ningun otro dato_
+## _Nota: El ID del endpoint es el del turno que se quiere reservar, no el del paciente.No deberá pasar ningun otro dato_
 
-# 📅🗂️ AppointmentsData
+# 🗂️ AppointmentData
+
+**📌 Concepto General**
+
+### La entidad Appointment Data está destinada a ser creada mediante la implementación de funciones internas de la aplicación. Sin embargo, existe la posibilidad de exponer un endpoint privado para su creación y edición. Este último es de vital importancia, ya que está pensado para que el Doctor pueda insertar los pormenores de la visita, los cuales formarán parte de la historia clínica del usuario.
+
+_Las peticiones GET requieren que el usuario esté logueado y no están permitidas para los pacientes, ya que contienen información sensible, con una excepción que explicaremos más adelante._
+
+### 🔍 **Obtener Todos los AppointmentData**
+
+📌 **Ruta:** `GET baseApi/api/v1/appoinmentdata`
+
+📤 **Response:**
+
+```json
+[
+  {
+    "id": "6011750a-3808-4d9d-ba7f-ebb3a31b5dc2",
+    "appointmentId": "ae11f962-ad5d-4339-9d0a-33a2684b1e2a",
+    "date": "2025-01-30",
+    "symptoms": null,
+    "observations": null,
+    "directives": null,
+    "patientId": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+    "doctorId": null,
+    "createdAt": "2025-01-31T16:31:37.946Z"
+  }
+]
+```
+
+### 🔍 **Obtener Todos los AppointmentData de un Paciente en particular**
+
+**_Excepción para Pacientes_**
+
+_La excepción mencionada se presenta aquí. Si el paciente está logueado, puede tener acceso a su historia clínica haciendo una búsqueda por query de paciente. El endpoint es:_
+
+📌 **Ruta:** `GET baseApi/api/v1/appoinmentdata?patientId=220d190b-16f3-4fe9-a11c-a27ac96916a8`
+
+_Internamente, permitirá el acceso a cualquier rol, pero en el caso de un paciente, verificará que el patientId coincida con el del usuario logueado, dando acceso solo al propietario de la información._
+
+### 🔍 **Obtener AppointmentData por Id**
+
+📌 **Ruta:** `GET baseApi/api/v1/appoinmentdata//6011750a-3808-4d9d-ba7f-ebb3a31b5dc2`
+
+📤 **Response:**
+
+```json
+{
+  "id": "6011750a-3808-4d9d-ba7f-ebb3a31b5dc2",
+  "appointmentId": "ae11f962-ad5d-4339-9d0a-33a2684b1e2a",
+  "date": "2025-01-30",
+  "symptoms": null,
+  "observations": null,
+  "directives": null,
+  "patientId": "e29cd687-c016-4313-8d3a-76575dccb7c1",
+  "doctorId": null,
+  "createdAt": "2025-01-31T16:31:37.946Z"
+}
+```
+
+### ✍️ **Creación de AppointmentData**
+
+_La aplicación crea automáticamente appointmentData al asignar un appointment a un usuario. Sin embargo, también se puede crear manualmente._
+
+📌 **Ruta:** `POST baseApi/api/v1/appoinmentdata`
+
+_Se necesita estar loggeado y con un rol distinto a 'Patient'_
+
+📥 **Request:**
+
+```json
+{
+  "appointmentId": "40057297-3e0d-4d5b-936a-6294293a3779",
+  "date": "2025-02-28",
+  "symptoms": "",
+  "observations": "",
+  "directives": "",
+  "patientId": "4af37102-dab2-4585-9e2a-7b2d34cf3de3"
+}
+```
+
+📤 **Response: ✅**
+
+```json
+{
+  "createdAt": "2025-02-05T12:22:08.236Z",
+  "id": "b8856527-05ef-474d-a434-196289af2cb9",
+  "appointmentId": "40057297-3e0d-4d5b-936a-6294293a3779",
+  "date": "2025-02-28",
+  "symptoms": "",
+  "observations": "",
+  "directives": "",
+  "patientId": "4af37102-dab2-4585-9e2a-7b2d34cf3de3",
+  "doctorId": null
+}
+```
+
+✅ **Validaciones minimas requeridas:**
+
+- **appointmentId**: Un id valido y existente
+- **date**: formato yyyy-mm-dd
+- **patientId**: formato válido
+
+### ✍️ **Edición de AppointmentData**
+
+### La edición del appointmentData reviste mucha importancia, ya que permite dejar constancia de lo que sucedió en la cita.
+
+📌 **Ruta:** `PATCH baseApi/api/v1/appoinmentdata/b8856527-05ef-474d-a434-196289af2cb9`
+
+_Se necesita estar loggeado y con un rol distinto a 'Patient'_
+
+📥 **Request:**
+
+```json
+{
+  "symptoms": "El paciente se presento con mucho dolor abdominal, dijo haber sufrido diarrea y vomitos",
+  "observations": "Se le hicieron preguntas de estilo y dijo haber bebido mucho liquido, pero no pudo comer nada",
+  "directives": "Se le indico comprar suero liquido en la farmacia, a los fines de que lo tome de a poco, y cuando ya no vomite eso pruebe con comer pechuga al horno sin condimentar y que vuela a sacar turno en 5 dias",
+  "doctorId": "de1a40d2-269f-4819-b857-bc4e401f015b"
+}
+```
+
+📤 **Response: ✅**
+
+```json
+{
+  "id": "b8856527-05ef-474d-a434-196289af2cb9",
+  "appointmentId": "40057297-3e0d-4d5b-936a-6294293a3779",
+  "date": "2025-02-28",
+  "symptoms": "El paciente se presento con mucho dolor abdominal, dijo haber sufrido diarrea y vomitos",
+  "observations": "Se le hicieron preguntas de estilo y dijo haber bebido mucho liquido, pero no pudo comer nada",
+  "directives": "Se le indico comprar suero liquido en la farmacia, a los fines de que lo tome de a poco, y cuando ya no vomite eso pruebe con comer pechuga al horno sin condimentar y que vuela a sacar turno en 5 dias",
+  "patientId": "4af37102-dab2-4585-9e2a-7b2d34cf3de3",
+  "doctorId": "de1a40d2-269f-4819-b857-bc4e401f015b",
+  "createdAt": "2025-02-05T12:22:08.236Z"
+}
+```
+
+### 🗑️ **Borrado de AppointmentData**
+
+### La idea es no tener que utilizarlo, pero por fines de prolijidad, nos regimos por las normas generales: no se le permite al paciente hacerlo y se debe especificar en el endpoint el ID del turno referido.
+
+📌 **Ruta:** `DELETE baseApi/api/v1/appoinmentdata/b8856527-05ef-474d-a434-196289af2cb9`
 
 ---
 

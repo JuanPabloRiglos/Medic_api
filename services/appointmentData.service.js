@@ -61,7 +61,6 @@ class appointmentDataService {
   async create(newData) {
     try {
       const newAppointmentData = await models.AppointmentData.create(newData);
-      console.log('DEVUELVE ESTO', newAppointmentData);
       return newAppointmentData;
     } catch (error) {
       if (error.name === 'SequelizeUniqueConstraintError') {

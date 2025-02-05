@@ -43,7 +43,6 @@ export const appointmentDataController = {
   },
 
   async create(data) {
-    console.log('EN Controller APPDta');
     try {
       const dataToAdd = { id: uuidv4(), ...data };
       const newData = await service.create(dataToAdd);
