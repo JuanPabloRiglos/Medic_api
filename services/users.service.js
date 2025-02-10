@@ -107,7 +107,7 @@ class UserService {
       console.log('New User -> ', newUser, 'New Auth ->', newAuth);
       return {
         ...newUser.dataValues,
-        emal: newAuth.dataValues.email,
+        email: newAuth.dataValues.email,
       };
     } catch (error) {
       await transaction.rollback(); //Tira todo para atras si uno no se creo
