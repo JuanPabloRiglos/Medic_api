@@ -22,21 +22,21 @@ const app = express();
 
 //middlewares
 app.use(express.json());
-app.use(cors()); //cualquier origen
+// app.use(cors()); //cualquier origen
 setupAuth();
-/* Esto para habilitar Solo algunas urls 
- const whiteList=[ 'http:localhost:8080', 'https:unfrontend.com'];
- const options ={
-   origin: (origin, callback)=>{
-      if(whiteList.includes(origin)){
-         callback(null, true)
-      }else{
-         callback(new Error('Origen no permitido por la Api'))
-      }
-   }
- }
- app.use(cors(options))
-*/
+/* Esto para habilitar Solo algunas urls */
+const whiteList = ['http://localhost:5173'];
+const options = {
+  origin: (origin, callback) => {
+    if (whiteList.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Origen no permitido por la Api'));
+    }
+  },
+};
+app.use(cors(options));
+
 app.get('/', (req, res) => {
   res.send('Bienvenido al servidor de turnos medicos');
 });
