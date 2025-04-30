@@ -2,13 +2,19 @@ import express from 'express';
 import passport from 'passport';
 //importaciones internas
 import { userController } from '../controllers/user.controller.js';
+import { doctorController } from '../controllers/doctor.controller.js';
+// Funcion p/pasarle eschemas de validdacion
 import { validatorHandler } from '../middlewares/entryValidatorHandler.js';
+//Validador de roles
 import { rolesHandler } from '../middlewares/auth.handler.js';
+//dtos Validators schemas
 import {
   createUserRequiredDtos,
   updateUserRequiredDtos,
   findOrDeleteRequireDtos,
 } from '../dtos/user.dto.js';
+
+import { createOrUpdateDoctorDto } from '../dtos/doctor.dto.js';
 
 const router = express.Router();
 
@@ -46,7 +52,7 @@ router.get(
 router.patch(
   '/:id',
   passport.authenticate('jwt', { session: false }),
-  rolesHandler('Admin', 'Doctor', 'Secretary', 'Patient'),
+  rolesHandler('Admin', 'Doctor', 'Secretary', 'Patient'), //al paciente solo lo deja modificar su propio perfil
   validatorHandler(findOrDeleteRequireDtos, 'params'),
   validatorHandler(updateUserRequiredDtos, 'body'),
   async (req, res, next) => {
@@ -55,6 +61,26 @@ router.patch(
     try {
       const updatedUser = await userController.update(id, newData);
       res.status(200).json(updatedUser);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+//Proximo endpoint -> Solo para la edicion/creacion de doctores
+router.patch(
+  '/:id/doctor',
+  passport.authenticate('jwt', { session: false }),
+  rolesHandler('Admin', 'Doctor', 'Secretary'),
+  validatorHandler(findOrDeleteRequireDtos, 'params'),
+  // validatorHandler(updateUserRequiredDtos, 'body'),
+  validatorHandler(createOrUpdateDoctorDto, 'body'),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const data = req.body;
+      const doctor = await doctorController.create(id, data); //Crear
+      res.status(200).json(doctor);
     } catch (error) {
       next(error);
     }
@@ -85,7 +111,7 @@ router.delete(
   async (req, res, next) => {
     try {
       const { id } = req.params;
-      const removedUSer = await userController.delete(id);
+      const removedUSer = await userController.destroy(id);
       res.status(201).json(removedUSer);
     } catch (error) {
       next(error);

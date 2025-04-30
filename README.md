@@ -424,6 +424,78 @@ _El paciente solo puede eliminat su usuario, no otros, para ello se requiere est
 
 ---
 
+# 🩺 Doctor
+
+**📌 Concepto General**
+
+### La entidad Doctor representa a un profesional de la salud dentro del sistema. No se crea como un recurso independiente, sino que se añade a un usuario previamente existente mediante un endpoint específico. Este proceso también actualiza el rol del usuario a "Doctor" automáticamente.
+
+**📌 Requiere un token vigente de un usuario con rol "Admin", "Secretary" o "Doctor"**
+
+### ✍️ Asignar Rol de Doctor a un Usuario Existente
+
+📌 **Ruta**: `PATCH baseApi/api/v1/user/:userId/doctor`
+
+(reemplazar :userId por el ID del usuario que se desea convertir en doctor)
+
+📥 **Request:**
+
+```json
+{
+  "specialty": "Ginecologa",
+  "licenseNumber": "15234kdh788LP",
+  "experience": "Una ginecóloga formada en la Facultad de La Plata está capacitada para brindar atención integral a la salud femenina en todas las etapas de la vida. Tiene experiencia en la prevención, diagnóstico y tratamiento de enfermedades ginecológicas, así como en el seguimiento de embarazos y salud reproductiva. Posee habilidades para realizar controles de rutina, orientar en planificación familiar y abordar temas de salud sexual con sensibilidad y profesionalismo. Además, trabaja en colaboración con otros especialistas para garantizar el bienestar integral de sus pacientes",
+  "address": "Hospital Español, calle 9 entre 36 y 35, La Plata"
+}
+```
+
+📌 **Importante:**
+
+## El usuario debe existir previamente.
+
+## El usuario puede no tener ya el rol "Doctor".
+
+## Al completar este proceso, el rol del usuario se actualizará automáticamente a "Doctor".
+
+📤 **Response:**
+
+```json
+{
+  "id": "2a1e8799-0b63-48cf-9c68-451122fc5312",
+  "specialty": "Ginecologa",
+  "licenseNumber": "15234kdh788LP",
+  "experience": "Una ginecóloga formada en la Facultad de La Plata está capacitada para brindar atención integral a la salud femenina...",
+  "address": "Hospital Español, calle 9 entre 36 y 35, La Plata",
+  "createdAt": "2025-04-29T17:04:12.000Z",
+  "user": {
+    "id": "4af37102-dab2-4585-9e2a-7b2d34cf3de3",
+    "name": "Nombre",
+    "lastName": "Apellido",
+    "role": "Doctor",
+    "phone": "15123456789",
+    "healthInsurance": "ninguna",
+    "createdAt": "2025-02-01T12:48:14.003Z",
+    "auth": {
+      "email": "nombreApellido@gmail.com"
+    }
+  }
+}
+```
+
+✅ **Validaciones:**
+
+**specialty:** mínimo 3 caracteres
+
+**licenseNumber:** alfanumérico, único, mínimo 6 caracteres
+
+**experience:** texto descriptivo, mínimo 20 caracteres
+
+**address:** mínimo 5 caracteres
+
+**userId:** debe corresponder a un usuario válido y existente que no sea ya doctor
+
+---
+
 # 📅 Appointments
 
 **📌 Concepto General**
