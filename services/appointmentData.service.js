@@ -37,16 +37,41 @@ class appointmentDataService {
           patientId: id,
         },
         include: [
+          // Incluir información del paciente
           {
             model: models.User,
             as: 'patient',
             attributes: ['name', 'phone'],
             include: [
-              //include anidado
               {
                 model: models.Auth,
                 as: 'auth',
-                attributes: ['email'], // Traemos el email desde Auth
+                attributes: ['email'],
+              },
+            ],
+          },
+          // Incluir información del doctor
+          {
+            model: models.User,
+            as: 'doctor',
+            attributes: ['name', 'lastName', 'phone'],
+            include: [
+              // Aquí obtenemos la información específica del doctor
+              {
+                model: models.Doctor,
+                as: 'doctorData',
+                attributes: [
+                  'specialty',
+                  'licenseNumber',
+                  'experience',
+                  'insuranceCompanies',
+                  'address',
+                ],
+              },
+              {
+                model: models.Auth,
+                as: 'auth',
+                attributes: ['email'],
               },
             ],
           },

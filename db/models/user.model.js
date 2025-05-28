@@ -33,6 +33,32 @@ const UserSchema = {
     allowNull: true, // solo pacientes
     type: DataTypes.STRING,
   },
+
+  birthdate: {
+    allowNull: true,
+    type: DataTypes.DATEONLY,
+  },
+  image: {
+    allowNull: true,
+    type: DataTypes.STRING,
+  },
+  dni: {
+    allowNull: true,
+    type: DataTypes.STRING,
+  },
+  country: {
+    allowNull: true,
+    type: DataTypes.STRING,
+  },
+  state: {
+    allowNull: true,
+    type: DataTypes.STRING,
+  },
+  postalCode: {
+    allowNull: true,
+    type: DataTypes.STRING,
+    field: 'postal_code',
+  },
   createdAt: {
     allowNull: false,
     type: DataTypes.DATE,
@@ -47,9 +73,14 @@ class User extends Model {
       as: 'auth',
       foreignKey: 'userId',
     });
+
     this.hasMany(models.Appointment, {
       as: 'createdDates',
       foreignKey: 'createdBy',
+    });
+    this.hasOne(models.Doctor, {
+      as: 'doctorData',
+      foreignKey: 'userId',
     });
     this.hasMany(models.Appointment, {
       as: 'assignedDates',

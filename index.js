@@ -18,6 +18,11 @@
     "phone": "15123456789", 
     "healthInsurance": "ninguna"
 }
+
+
+USUARIO PACIENTE:
+email : mariaPaciente@hotmail.com
+paswd: 12345678
 */
 
 //importaciones externas
